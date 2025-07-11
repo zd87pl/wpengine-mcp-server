@@ -10,8 +10,12 @@
       "domains": ["your-domain.com"],
       "env_variables": [
         {
-          "key": "WPENGINE_API_TOKEN",
-          "value": "your-wpengine-api-token"
+          "key": "WPENGINE_AUTH_TOKEN_ID",
+          "value": "your-wpengine-api-token-id"
+        },
+        {
+          "key": "WPENGINE_AUTH_PASSWORD",
+          "value": "your-wpengine-api-password"
         },
         {
           "key": "WPENGINE_API_BASE_URL",
@@ -23,5 +27,34 @@
         }
       ]
     }
-  ]
+  ],
+  "build": {
+    "nodejs_version": "18",
+    "npm_version": "9",
+    "build_command": "npm run build",
+    "publish_directory": "dist"
+  },
+  "functions": {
+    "src/index.ts": {
+      "runtime": "nodejs18.x",
+      "memory": 256,
+      "timeout": 30
+    }
+  },
+  "demo": {
+    "name": "wpengine-chat-demo",
+    "build": {
+      "nodejs_version": "18",
+      "npm_version": "9",
+      "build_command": "cd demo && npm run build",
+      "publish_directory": "demo/.next"
+    },
+    "functions": {
+      "demo/src/app/api/chat/route.ts": {
+        "runtime": "nodejs18.x",
+        "memory": 512,
+        "timeout": 30
+      }
+    }
+  }
 }

@@ -1,0 +1,40 @@
+{
+  "name": "wpengine-chat-demo",
+  "region": "us-central1",
+  "environments": [
+    {
+      "name": "production",
+      "branch": "main",
+      "wp_environment_name": "wpengine-chat-demo"
+    }
+  ],
+  "build": {
+    "nodejs_version": "18",
+    "npm_version": "9",
+    "build_command": "npm run build",
+    "publish_directory": ".next"
+  },
+  "environment_variables": {
+    "WPENGINE_API_BASE_URL": "https://api.wpengineapi.com/v1",
+    "WPENGINE_AUTH_TOKEN_ID": "",
+    "WPENGINE_AUTH_PASSWORD": ""
+  },
+  "headers": [
+    {
+      "source": "/_next/static/**",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "app/api/chat/route.ts": {
+      "runtime": "nodejs18.x",
+      "memory": 512,
+      "timeout": 30
+    }
+  }
+}
