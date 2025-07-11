@@ -185,10 +185,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             type: "text",
             text: JSON.stringify({
               success: true,
-              data: {
-                sites: sites,
-                total_sites: sites.length
-              }
+              data: sites
             }, null, 2)
           }]
         };
@@ -196,7 +193,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case "get_site_info": {
         const validatedInput = validateInput(getSiteInfoSchema, request.params.arguments);
-        const siteInfo = await wpengineClient.getSiteInfo(validatedInput.site_id);
+        const siteInfo = await wpengineClient.getSite(validatedInput.site_id);
         
         return {
           content: [{
@@ -213,9 +210,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const validatedInput = validateInput(createSiteSchema, request.params.arguments);
         const newSite = await wpengineClient.createSite({
           name: validatedInput.name,
-          environment: validatedInput.environment,
-          php_version: validatedInput.php_version,
-          wp_version: validatedInput.wp_version,
+          account_id: validatedInput.account_id,
         });
         
         return {
