@@ -2,7 +2,7 @@
 
 /**
  * WP Engine MCP Server
- * 
+ *
  * This MCP server provides site management capabilities for WP Engine managed WordPress platform.
  * It implements tools for:
  * - Listing sites
@@ -10,10 +10,13 @@
  * - Creating new sites
  * - Updating existing sites
  * - Deleting sites
+ *
+ * Supports both local (stdio) and remote (HTTP) deployment modes.
  */
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
