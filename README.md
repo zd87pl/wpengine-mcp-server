@@ -41,11 +41,11 @@ This MCP server provides the following tools for WP Engine site management:
    npm run build
    ```
 
-4. **Get your WP Engine API token**:
+4. **Get your WP Engine API credentials**:
    - Log into your WP Engine account
-   - Navigate to the API section in your dashboard
-   - Generate a new API token
-   - Copy the token for configuration
+   - Navigate to the API Access section in your dashboard
+   - Generate a new API token ID and password
+   - Copy the auth token ID and password for configuration
 
 ## Configuration
 
@@ -54,7 +54,7 @@ This MCP server provides the following tools for WP Engine site management:
 The server is configured in your Claude Desktop app. Update the configuration file at:
 `~/Library/Application Support/Claude/claude_desktop_config.json`
 
-Replace the path with your actual server location and add your WP Engine API token:
+Replace the path with your actual server location and add your WP Engine API credentials:
 
 ```json
 {
@@ -65,7 +65,8 @@ Replace the path with your actual server location and add your WP Engine API tok
         "/path/to/your/wpengine-mcp-server/build/index.js"
       ],
       "env": {
-        "WPENGINE_API_TOKEN": "your-actual-wpengine-api-token"
+        "WPENGINE_AUTH_TOKEN_ID": "your-auth-token-id",
+        "WPENGINE_AUTH_PASSWORD": "your-auth-password"
       },
       "disabled": false,
       "alwaysAllow": [],
@@ -79,7 +80,8 @@ Replace the path with your actual server location and add your WP Engine API tok
 
 The server supports the following environment variables:
 
-- `WPENGINE_API_TOKEN` (required) - Your WP Engine API token
+- `WPENGINE_AUTH_TOKEN_ID` (required) - Your WP Engine API auth token ID
+- `WPENGINE_AUTH_PASSWORD` (required) - Your WP Engine API auth password
 - `WPENGINE_API_BASE_URL` (optional) - API base URL (default: https://api.wpengineapi.com/v1)
 - `WPENGINE_REQUEST_TIMEOUT` (optional) - Request timeout in ms (default: 30000)
 
@@ -112,8 +114,12 @@ WP Engine Atlas is a modern headless WordPress platform that supports Node.js ap
          "domains": ["your-domain.com"],
          "env_variables": [
            {
-             "key": "WPENGINE_API_TOKEN",
-             "value": "your-wpengine-api-token"
+             "key": "WPENGINE_AUTH_TOKEN_ID",
+             "value": "your-wpengine-auth-token-id"
+           },
+           {
+             "key": "WPENGINE_AUTH_PASSWORD",
+             "value": "your-wpengine-auth-password"
            },
            {
              "key": "WPENGINE_API_BASE_URL",
@@ -150,7 +156,7 @@ WP Engine Atlas is a modern headless WordPress platform that supports Node.js ap
 
 #### Production Considerations
 
-- **Environment Variables**: Use Atlas environment variables for API tokens
+- **Environment Variables**: Use Atlas environment variables for API credentials
 - **Monitoring**: Enable Atlas monitoring and logging through the dashboard
 - **SSL/TLS**: Atlas provides automatic SSL certificates
 - **Custom Domains**: Configure custom domains in the `wpe.json` file
@@ -283,14 +289,14 @@ node build/index.js
 
 ## Troubleshooting
 
-1. **Server not starting**: Check that your API token is valid and properly configured
+1. **Server not starting**: Check that your API credentials are valid and properly configured
 2. **API errors**: Ensure your WP Engine account has API access enabled
 3. **Permission errors**: Verify your API token has the necessary permissions
 4. **Network issues**: Check your internet connection and firewall settings
 
 ## Security
 
-- API tokens are passed via environment variables
+- API credentials are passed via environment variables
 - All API communications use HTTPS
 - Input validation prevents malicious data
 - Error messages don't expose sensitive information

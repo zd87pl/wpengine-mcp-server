@@ -8,19 +8,19 @@ import { z } from 'zod';
  * Validate environment configuration
  */
 export function validateEnvironmentConfig(): void {
-  const username = process.env.WPENGINE_USERNAME;
-  const password = process.env.WPENGINE_PASSWORD;
+  const authTokenId = process.env.WPENGINE_AUTH_TOKEN_ID;
+  const authPassword = process.env.WPENGINE_AUTH_PASSWORD;
   
-  if (!username || !password) {
-    throw new Error('WPENGINE_USERNAME and WPENGINE_PASSWORD environment variables are required. Get these from your WP Engine Portal API Access page.');
+  if (!authTokenId || !authPassword) {
+    throw new Error('WPENGINE_AUTH_TOKEN_ID and WPENGINE_AUTH_PASSWORD environment variables are required. Get these from your WP Engine Portal API Access page.');
   }
   
-  if (typeof username !== 'string' || username.length === 0) {
-    throw new Error('WPENGINE_USERNAME must be a non-empty string');
+  if (typeof authTokenId !== 'string' || authTokenId.length === 0) {
+    throw new Error('WPENGINE_AUTH_TOKEN_ID must be a non-empty string');
   }
   
-  if (typeof password !== 'string' || password.length === 0) {
-    throw new Error('WPENGINE_PASSWORD must be a non-empty string');
+  if (typeof authPassword !== 'string' || authPassword.length === 0) {
+    throw new Error('WPENGINE_AUTH_PASSWORD must be a non-empty string');
   }
 }
 
