@@ -1,37 +1,27 @@
 {
   "name": "wpengine-mcp-server",
-  "region": "us-east-1",
-  "environments": {
-    "production": {
-      "wp_schema_version": "latest",
-      "php_version": "8.2",
-      "node_version": "18"
-    },
-    "staging": {
-      "wp_schema_version": "latest",
-      "php_version": "8.2",
-      "node_version": "18"
+  "repo": "your-organization/wpengine-mcp-server",
+  "region": "US-C",
+  "environments": [
+    {
+      "name": "Production",
+      "branch": "main",
+      "wp_environment_name": "YOUR WordPress environment name",
+      "domains": ["your-domain.com"],
+      "env_variables": [
+        {
+          "key": "WPENGINE_API_TOKEN",
+          "value": "your-wpengine-api-token"
+        },
+        {
+          "key": "WPENGINE_API_BASE_URL",
+          "value": "https://api.wpengineapi.com/v1"
+        },
+        {
+          "key": "WPENGINE_REQUEST_TIMEOUT",
+          "value": "30000"
+        }
+      ]
     }
-  },
-  "build": {
-    "command": "npm run atlas:build"
-  },
-  "start": {
-    "command": "npm run atlas:start"
-  },
-  "healthcheck": {
-    "path": "/health",
-    "interval": 30,
-    "timeout": 10,
-    "retries": 3
-  },
-  "resources": {
-    "memory": "1GB",
-    "cpu": "1vCPU"
-  },
-  "scaling": {
-    "min_instances": 1,
-    "max_instances": 3,
-    "target_cpu": 70
-  }
+  ]
 }

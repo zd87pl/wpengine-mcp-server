@@ -16,9 +16,7 @@
     "watch": "tsc --watch",
     "inspector": "npx @modelcontextprotocol/inspector build/index.js",
     "start": "node build/index.js",
-    "dev": "npm run build && npm start",
-    "atlas:build": "npm run build",
-    "atlas:start": "npm start"
+    "dev": "npm run build && npm start"
   },
   "engines": {
     "node": ">=18.0.0",

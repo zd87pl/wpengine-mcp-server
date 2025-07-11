@@ -92,102 +92,79 @@ WP Engine Atlas is a modern headless WordPress platform that supports Node.js ap
 #### Prerequisites for Atlas Deployment
 
 1. **WP Engine Atlas Account** - Sign up at [wpengine.com/atlas](https://wpengine.com/atlas)
-2. **Atlas CLI** - Install the Atlas CLI tool
-3. **Node.js 18+** - Ensure your Atlas environment supports Node.js 18 or higher
+2. **WP Engine CLI** - Install the WP Engine CLI tool: `npm install -g @wpengine/cli`
+3. **Git Repository** - Your code must be in a Git repository
+4. **Node.js 18+** - Ensure your Atlas environment supports Node.js 18 or higher
 
 #### Atlas Deployment Steps
 
-1. **Prepare for Atlas**:
-   ```bash
-   # Create atlas-specific configuration
-   cp package.json package.json.backup
-   ```
-
-2. **Add Atlas Configuration** to `package.json`:
+1. **Configure Atlas Application** (`wpe.json`):
    ```json
    {
      "name": "wpengine-mcp-server",
-     "version": "0.1.0",
-     "description": "MCP Server for WP Engine API",
-     "main": "build/index.js",
-     "scripts": {
-       "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
-       "start": "node build/index.js",
-       "dev": "npm run build && npm start",
-       "atlas:build": "npm run build",
-       "atlas:start": "npm start"
-     },
-     "engines": {
-       "node": ">=18.0.0"
-     }
-   }
-   ```
-
-3. **Create Atlas Configuration** (`wpe.json`):
-   ```json
-   {
-     "name": "wpengine-mcp-server",
-     "region": "us-east-1",
-     "environments": {
-       "production": {
-         "wp_schema_version": "latest",
-         "php_version": "8.2",
-         "node_version": "18"
+     "repo": "your-organization/wpengine-mcp-server",
+     "region": "US-C",
+     "environments": [
+       {
+         "name": "Production",
+         "branch": "main",
+         "wp_environment_name": "YOUR WordPress environment name",
+         "domains": ["your-domain.com"],
+         "env_variables": [
+           {
+             "key": "WPENGINE_API_TOKEN",
+             "value": "your-wpengine-api-token"
+           },
+           {
+             "key": "WPENGINE_API_BASE_URL",
+             "value": "https://api.wpengineapi.com/v1"
+           },
+           {
+             "key": "WPENGINE_REQUEST_TIMEOUT",
+             "value": "30000"
+           }
+         ]
        }
-     },
-     "build": {
-       "command": "npm run atlas:build"
-     },
-     "start": {
-       "command": "npm run atlas:start"
-     }
+     ]
    }
    ```
 
-4. **Set Environment Variables** in Atlas Dashboard:
+2. **Deploy to Atlas**:
    ```bash
-   # In Atlas environment settings, add:
-   WPENGINE_API_TOKEN=your-actual-api-token
-   WPENGINE_API_BASE_URL=https://api.wpengineapi.com/v1
-   WPENGINE_REQUEST_TIMEOUT=30000
-   ```
-
-5. **Deploy to Atlas**:
-   ```bash
-   # Initialize Atlas project
-   atlas init
+   # Login to WP Engine
+   wpe auth login
    
-   # Deploy to Atlas
-   atlas deploy
+   # Create Atlas application
+   wpe apps create
+   
+   # Deploy your application
+   wpe apps deploy
    ```
 
 #### Atlas Configuration Options
 
-- **Memory**: 512MB - 2GB (recommended: 1GB)
-- **CPU**: 0.5 - 2 vCPU (recommended: 1 vCPU)
-- **Auto-scaling**: Enable for production loads
-- **Health checks**: Configure HTTP health check on `/health` endpoint
+- **Region**: Choose from available regions (US-C, US-E, EU-W, etc.)
+- **Environment Variables**: Configure via the `wpe.json` file
+- **Domains**: Custom domains can be configured in the environments array
+- **WordPress Environment**: Link to existing WP Engine WordPress environment if needed
 
 #### Production Considerations
 
-- **Environment Variables**: Use Atlas secrets management for API tokens
-- **Monitoring**: Enable Atlas monitoring and logging
+- **Environment Variables**: Use Atlas environment variables for API tokens
+- **Monitoring**: Enable Atlas monitoring and logging through the dashboard
 - **SSL/TLS**: Atlas provides automatic SSL certificates
-- **Load Balancing**: Configure Atlas load balancer for high availability
-- **Backup**: Regular backups of Atlas configuration and environment
+- **Custom Domains**: Configure custom domains in the `wpe.json` file
+- **Git Integration**: Atlas automatically deploys from your specified Git branch
 
 ### Remote MCP Server Configuration
 
-When deployed on Atlas, configure as a remote MCP server:
+When deployed on Atlas, configure as a remote MCP server in your Claude Desktop configuration:
 
 ```json
 {
   "mcpServers": {
     "wpengine-mcp-server": {
-      "url": "https://your-atlas-app.wpengine.com/mcp",
-      "headers": {
-        "Authorization": "Bearer your-mcp-server-token"
-      },
+      "url": "https://your-atlas-app.wpengine.com",
       "disabled": false,
       "alwaysAllow": [],
       "disabledTools": []
@@ -195,6 +172,8 @@ When deployed on Atlas, configure as a remote MCP server:
   }
 }
 ```
+
+**Note**: This MCP server is designed to run in stdio mode for local development. For production deployment on Atlas, you may need to implement HTTP transport for the MCP protocol.
 
 ## Usage
 
